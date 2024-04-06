@@ -1,0 +1,29 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>add</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <div class="form">
+    <label>Product Name: </label>
+    <input type="text" [(ngModel)]="product" placeholder="Product" name="text" class="input">
+    <label>Product Description: </label>
+    <textarea placeholder="Description" [(ngModel)]="description" id="comment" name="comment" rows="5" required="" class="input"></textarea>
+    <label>Quantity: </label>
+    <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
+    <label>Image: </label>
+      <div class="sort">
+        <input type="file" width="150px" name="text" class="input">
+        <ion-icon class="icon" slot="end" name="camera-outline" (click)="takePhoto()"></ion-icon>
+      </div>
+
+      <div class="preview-container" *ngIf="capturedPhotos">
+        <ion-img [src]="previewImage" alt="Preview Image"></ion-img>
+      </div>
+
+      <button class="flip-card__btn" (click)="submit()" >Submit!</button>
+  </div>
+
+</ion-content>
