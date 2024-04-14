@@ -5,46 +5,48 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="wrapper">
-    <div class="card-switch">
-        <label class="switch">
-           <input type="checkbox" class="toggle">
-           <span class="slider"></span>
-           <span class="card-side"></span>
-           <div class="flip-card__inner">
-              <div class="flip-card__front">
-                 <div class="title">Log in</div>
-                 <form class="flip-card__form" action="">
-                    <input class="flip-card__input" name="email" [(ngModel)]="email" [ngModelOptions]="{ standalone: true }" placeholder="Email" type="email">
-                    <input class="flip-card__input" name="password" [(ngModel)]="password" [ngModelOptions]="{ standalone: true }" placeholder="Password" type="password">
-                    <button class="flip-card__btn" (click)="Login()" >sign-in!</button>
-                 </form>
-              </div>
-              <div class="flip-card__back">
-                 <div class="title">Sign up</div>
-                 <form class="flip-card__form" action="">
-                  <div class="flex">
-                    <label>
-                        <input class="flip-card" [(ngModel)]="firstname" [ngModelOptions]="{ standalone: true }"  type="text" placeholder="First Name" required="">
+  <div class="content">
+    <div class="wrapper">
+      <div class="card-switch">
+          <label class="switch">
+             <input type="checkbox" class="toggle">
+             <span class="slider"></span>
+             <span class="card-side"></span>
+             <div class="flip-card__inner">
+                <div class="flip-card__front">
+                   <div class="title">Log in</div>
+                   <form class="flip-card__form" action="">
+                      <input class="flip-card__input" name="email" [(ngModel)]="email" [ngModelOptions]="{ standalone: true }" placeholder="Email" type="email">
+                      <input class="flip-card__input" name="password" [(ngModel)]="password" [ngModelOptions]="{ standalone: true }" placeholder="Password" type="password">
+                      <button class="flip-card__btn" (click)="Login()" >sign-in!</button>
+                   </form>
+                </div>
+                <div class="flip-card__back">
+                   <div class="title">Sign up</div>
+                   <form class="flip-card__form" action="">
+                    <div class="flex">
+                      <label>
+                          <input class="flip-card" [(ngModel)]="firstname" [ngModelOptions]="{ standalone: true }"  type="text" placeholder="First Name" required="">
+                      </label>
+                      <label>
+                          <input class="flip-card" [(ngModel)]="lastname" [ngModelOptions]="{ standalone: true }"  type="text" placeholder="Last Name" required="">
+                      </label>
+                    </div>
+                      <label>
+                        <input class="flip-card__input" [(ngModel)]="email" [ngModelOptions]="{ standalone: true }"  type="email" placeholder="Email" required="">
                     </label>
                     <label>
-                        <input class="flip-card" [(ngModel)]="lastname" [ngModelOptions]="{ standalone: true }"  type="text" placeholder="Last Name" required="">
+                        <input class="flip-card__input" [(ngModel)]="password" [ngModelOptions]="{ standalone: true }"  type="password" placeholder="Password" required="">
                     </label>
-                  </div>
                     <label>
-                      <input class="flip-card__input" [(ngModel)]="email" [ngModelOptions]="{ standalone: true }"  type="email" placeholder="Email" required="">
-                  </label>
-                  <label>
-                      <input class="flip-card__input" [(ngModel)]="password" [ngModelOptions]="{ standalone: true }"  type="password" placeholder="Password" required="">
-                  </label>
-                  <label>
-                      <input class="flip-card__input" [(ngModel)]="confirmpassword" [ngModelOptions]="{ standalone: true }"  type="password" placeholder="Confirm Password" required="">
-                  </label>
-                    <button class="flip-card__btn" (click)="onSubmit()">Sign-Up!</button>
-                 </form>
-              </div>
-           </div>
-        </label>
-    </div>   
+                        <input class="flip-card__input" [(ngModel)]="confirmpassword" [ngModelOptions]="{ standalone: true }"  type="password" placeholder="Confirm Password" required="">
+                    </label>
+                      <button class="flip-card__btn" (click)="onSubmit()">Sign-Up!</button>
+                   </form>
+                </div>
+             </div>
+          </label>
+      </div>   
+    </div>
   </div>
 </ion-content>

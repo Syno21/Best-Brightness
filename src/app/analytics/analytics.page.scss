@@ -1,0 +1,97 @@
+@mixin circle($size) {
+   content: "";
+   position: absolute;
+   border-radius: 50%;
+   left: calc(50% - #{$size/2});
+   top: calc(50% - #{$size/2});
+   width: $size;
+   height: $size;
+ }
+ 
+ $size: 200px;
+ 
+ .progress-pie-chart-container {
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: center;
+ 
+   @media (max-width: 768px) {
+     flex-direction: column;
+     align-items: center;
+   }
+ }
+ 
+ .progress-pie-chart {
+   width: $size;
+   height: $size;
+   border-radius: 50%;
+   background-color: #0833f1;
+   position: relative;
+   margin: 10px;
+ 
+   &.gt-50 {
+     background-color: #81CE97;
+   }
+ 
+   &.maximum-stock {
+     .maximum-stocks {
+       color: red;
+     }
+ 
+     .ppc-progress {
+       .ppc-progress-fill {
+         background: #1640fa;
+         transform: rotate(360deg); // Full progress bar
+       }
+     }
+   }
+ 
+   &.running-low {
+     .ppc-progress {
+       .ppc-progress-fill {
+         background: red; // Red progress bar for running low
+       }
+     }
+   }
+ }
+ 
+ .ppc-progress {
+   @include circle($size);
+   clip: rect(0, $size, $size, #{$size/2});
+ 
+   .ppc-progress-fill {
+     @include circle($size);
+     clip: rect(0, #{$size/2}, $size, 0);
+     background: #81CE97;
+     transform: rotate(calc(360deg * var(--progress-percentage)));
+     transition: transform 0.3s;
+   }
+ }
+ 
+ .ppc-percents {
+   @include circle(#{$size/1.15});
+   background: #ffffff;
+   text-align: center;
+   display: table;
+ 
+   span {
+     display: block;
+     font-size: 2.6em;
+     font-weight: bold;
+     color: #81CE97;
+ 
+     &.running-low {
+       color: red;
+     }
+   }
+ }
+ 
+ .pcc-percents-wrapper {
+   display: table-cell;
+   vertical-align: middle;
+ }
+ 
+ body {
+   font-family: Arial;
+   background: #f7f7f7;
+ }

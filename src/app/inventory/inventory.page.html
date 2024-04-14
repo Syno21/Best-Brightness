@@ -1,0 +1,55 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>inventory</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+<div class="container">
+	<div class="table" >
+		<div class="table-header">
+			<div class="header__item"><a id="name" class="filter__link" href="#">IMAGE</a></div>
+			<div class="header__item"><a id="wins" class="filter__link filter__link--number" href="#">PRODUCT</a></div>
+			<div class="header__item"><a id="losses" class="filter__link filter__link--number" href="#">QUANTITY</a></div>
+			<div class="header__item"><a id="total" class="filter__link filter__link--number" href="#">Total</a></div>
+		</div>
+		<div class="table-content" >	
+			<div class="table-row" *ngFor="let table of tables$">		
+				<div class="table-data">
+          <ion-img *ngIf="capturedPhotos.length > 0" [src]="table.capturedPhotosUrl" alt="Preview Image" class="table-image"></ion-img>
+        </div>
+				<div class="table-data">
+					<div>Product Name: {{ table.product }}</div>
+        			<div>Description: {{ table.description }}</div>
+				</div>
+				<div class="table-data">{{ table.quantity }}</div>
+				<div class="table-data">
+          <!-- (click)="navigateToNewPage(projectName)" -->
+          <!-- (click)="onCardClick(table.product)" -->
+          <button (click)="navigateToNewPage(table.product)">
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> Modify
+            </span>
+          </button>
+        </div>
+			</div>
+		</div>	
+	</div>
+</div>
+<ion-list class="list" *ngFor="let table of tables$">
+	<ion-card class="card1">
+		<ion-img *ngIf="capturedPhotos.length > 0" [src]="table.capturedPhotosUrl" alt="Preview Image" class="table-image"></ion-img>
+		<div class="table-data">
+			<div>Product Name: {{ table.product }}</div>
+			  <div>Description: {{ table.description }}</div>
+		</div>
+		<div class="table-data">Quantity: {{ table.quantity }}</div>
+		<button (click)="navigateToNewPage(table.product)">
+			<span>
+			  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="none" d="M0 0h24v24H0z"></path><path fill="currentColor" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"></path></svg> Modify
+			</span>
+		 </button>
+	</ion-card>
+</ion-list>
+</ion-content>

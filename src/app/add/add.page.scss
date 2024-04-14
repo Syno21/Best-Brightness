@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    padding: 2%;
 }
 
 .sort{
@@ -34,7 +35,7 @@
     --font-color-sub: #666;
     --bg-color: #fff;
     --main-color: #323232;
-    width: 400px;
+    width: 100%px;
     border-radius: 5px;
     border: 2px solid var(--main-color);
     background-color: var(--bg-color);
@@ -62,14 +63,42 @@
     --bg-color: #fff;
     --main-color: #323232;
     margin: 20px 0 20px 0;
-    width: 120px;
+    width: 90%;
     height: 40px;
     border-radius: 5px;
     border: 2px solid var(--main-color);
-    background-color: var(--bg-color);
+    background-color:rgb(124, 246, 250);
     box-shadow: 4px 4px var(--main-color);
     font-size: 17px;
     font-weight: 600;
     color: var(--font-color);
     cursor: pointer;
-  } 
+    position: fixed;
+    bottom: 0;
+    left: 5%;
+    z-index: 9999; /* Ensure it's above other content */
+  }
+
+  .flip-card__btn1 {
+    --input-focus: #2d8cf0;
+    --font-color: #323232;
+    --font-color-sub: #666;
+    --bg-color: #fff;
+    --main-color: #323232;
+    margin: 20px 0 20px 0;
+    width: 100%;
+    height: 40px;
+    border-radius: 5px;
+    border: 2px solid var(--main-color);
+    background-color:rgb(124, 246, 250);
+    box-shadow: 4px 4px var(--main-color);
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--font-color);
+    cursor: pointer; /* Ensure it's above other content */
+  }
+
+  .cam{
+    width:20px;
+    height:20px;
+  }

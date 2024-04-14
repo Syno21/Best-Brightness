@@ -24,3 +24,32 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+
+ion-content{
+   --background: url('assets/background.gif') no-repeat center / cover; height: 100vh; display: flex; align-items: center; justify-content: center;
+      /* Replace 'background.gif' with your actual GIF file name */
+}
+
+ion-header{
+   ion-toolbar{
+      --background:none;
+   }
+   
+}
+
+body.scanner-active {
+   --background: transparent !important;
+   --ion-background-color: transparent !important;
+   background: transparent none !important;
+   --background: transparent none !important;
+   --ion-background-color: none;
+ }   
+ion-app.cameraView,
+ion-app.cameraView ion-content,
+ion-app.cameraView .nav-decor,
+ion-app.cameraView ion-page {
+ background: transparent none !important;
+ --background: transparent none !important;
+ --ion-background-color: none;
+}

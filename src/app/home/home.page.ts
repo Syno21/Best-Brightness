@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {  LoadingController,NavController, ToastController , AlertController} from '@ionic/angular';
 
 @Component({
   selector: 'app-home',
@@ -7,6 +8,27 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(
+    private Nav: NavController,
+  ) {}
 
+  goToInventory(){
+    this.Nav.navigateForward("/inventory");
+  }
+
+  goToAddUser(){
+    this.Nav.navigateForward("/create");
+  }
+
+  goToAnalytics(){
+    this.Nav.navigateForward("/analytics");
+  }
+
+  goToStockExchange(){
+    this.Nav.navigateForward("/deliveries");
+  }
+
+  goToAddNewStock(){
+    this.Nav.navigateForward("/add");
+  }
 }

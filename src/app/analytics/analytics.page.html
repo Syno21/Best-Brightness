@@ -1,0 +1,51 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>analytics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div>INVENTORY STOCK</div>
+  
+  <div class="progress-pie-chart-container">
+    <div class="progress-pie-chart" *ngFor="let table of tables$" [ngClass]="{ 'maximum-stock': table.quantity > 400}">
+      <div class="ppc-progress" [ngClass]="{ 'running-low': table.quantity < 50 }" [style]="calculateProgressWidth(table.quantity)">
+        <div class="ppc-progress-fill"></div>
+      </div>
+      <div class="ppc-percents">
+        <div class="pcc-percents-wrapper">
+          <span [ngClass]="{ 'running-low': table.quantity < 50 }">{{ table.quantity }}</span>
+          <span *ngIf="table.quantity < 50" class="running-low">Running Low</span>
+          <span *ngIf="table.quantity > 400" class="maximum-stocks">Maximum Stock</span>
+        </div>
+      </div>
+      <div>
+        <span>{{ table.product }}</span>
+      </div>
+    </div>
+  </div>
+
+  <br>
+  <br>
+  <div>IN STORE</div>
+  <br>
+  <br>
+ 
+  <div class="progress-pie-chart-container">
+    <div class="progress-pie-chart" *ngFor="let datas of datas$" [ngClass]="{ 'maximum-stock': datas.quantity > 100}">
+      <div class="ppc-progress" [ngClass]="{ 'running-low': datas.quantity < 25 }" [style]="calculateProgressWidth(datas.quantity)">
+        <div class="ppc-progress-fill"></div>
+      </div>
+      <div class="ppc-percents">
+        <div class="pcc-percents-wrapper">
+          <span [ngClass]="{ 'running-low': datas.quantity < 25 }">{{ datas.quantity }}</span>
+          <span *ngIf="datas.quantity < 25" class="running-low">Running Low</span>
+          <span *ngIf="datas.quantity > 100" class="maximum-stocks">Maximum Stock</span>
+        </div>
+      </div>
+      <div>
+        <span>{{ datas.product }}</span>
+      </div>
+    </div>
+  </div>
+</ion-content>

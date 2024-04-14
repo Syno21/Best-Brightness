@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Home
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,30 +9,26 @@
 <ion-content [fullscreen]="true">
 
   <div class="cards">
-    <div class="card red">
-        <p class="tip">Incoming Stock</p>
-        <p class="second-text">Lorem Ipsum</p>
-    </div>
-    <div class="card blue">
+    <div class="card blue" (click)="goToAddNewStock()">
         <p class="tip">New Items</p>
-        <p class="second-text">Lorem Ipsum</p>
+        <ion-icon class="icon" name="add-circle-outline"></ion-icon>
     </div>
-    <div class="card green">
-        <p class="tip">Outgoing Stock</p>
-        <p class="second-text">Lorem Ipsum</p>
+    <div class="card green" (click)="goToStockExchange()">
+        <p class="tip">Stock-Exchange</p>
+        <ion-icon class="icon" name="shuffle-outline"></ion-icon>
     </div>
-    <div class="card red">
+    <div class="card red" (click)="goToInventory()">
       <p class="tip">Inventory</p>
-      <p class="second-text">Lorem Ipsum</p>
+      <ion-icon class="icon" name="enter-outline"></ion-icon>
   </div>
-  <!-- <div class="card blue">
-      <p class="tip">Hover Me</p>
-      <p class="second-text">Lorem Ipsum</p>
+  <div class="card blue" (click)="goToAddUser()">
+      <p class="tip">Add Driver</p>
+      <ion-icon class="icon" name="person-add-outline"></ion-icon>
   </div>
-  <div class="card green">
-      <p class="tip">Hover Me</p>
-      <p class="second-text">Lorem Ipsum</p>
-  </div> -->
+  <div class="card green" (click)="goToAnalytics()">
+      <p class="tip">Analytics</p>
+      <ion-icon class="icon" name="trending-down-outline"></ion-icon>
+  </div>
 </div>
 
 </ion-content>

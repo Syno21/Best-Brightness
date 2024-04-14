@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import {
   Camera,
   CameraResultType,
@@ -28,6 +29,7 @@ export class AddPage implements OnInit {
   product: any;
   description: any;
   quantity: any;
+  barcode: any;
 
 
   constructor(
@@ -35,6 +37,7 @@ export class AddPage implements OnInit {
     private storage: AngularFireStorage,
     private loader: LoadingController,
     private Toast: ToastController,
+    private renderer: Renderer2,
   ) { }
 
   ngOnInit() {
@@ -88,6 +91,7 @@ export class AddPage implements OnInit {
         description: this.description,
         quantity: this.quantity,
         capturedPhotosUrl: imageUrl, // Use imageUrl instead of this.previewImage
+        barcode: this.barcode
       });
   
       loader.dismiss();
@@ -97,6 +101,69 @@ export class AddPage implements OnInit {
       loader.dismiss();
     }
   }
+
+  async closeScanner(){
+    const result = await BarcodeScanner.stopScan(); // start scanning and wait for a result
+    // if the result has content
+  
+    
+    this.showCard();
+    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+    document.querySelector('body')?.classList.remove('scanner-active');
+  }
+
+  hideCard() {
+    const cardElement = document.getElementById('container');
+    if (cardElement) {
+      this.renderer.setStyle(cardElement, 'display', 'none'); // Use Renderer2's setStyle()
+    }
+  }
+showCard() {
+    const cardElement = document.getElementById('container');
+    if (cardElement) {
+      this.renderer.setStyle(cardElement, 'display', 'contents'); // Use Renderer2's setStyle()
+    }
+  }
+  async scanBarcode() {
+ 
+    window.document.querySelector('ion-app')?.classList.add('cameraView');
+    this.hideCard();
+    document.querySelector('body')?.classList.add('scanner-active');
+    await BarcodeScanner.checkPermission({ force: true });
+    // make background of WebView transparent
+    // note: if you are using ionic this might not be enough, check below
+    //BarcodeScanner.hideBackground();
+    const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
+    // if the result has content
+    if (result.hasContent) {
+      this.barcode = result.content;
+      console.log(result.content);
+      
+      this.showCard();
+      
+      const querySnapshot = await this.db
+      .collection('Notes')
+      .ref.where('barcode', '==', result.content)
+      .limit(1)
+      .get();
+      window.document.querySelector('ion-app')?.classList.remove('cameraView');
+      document.querySelector('body')?.classList.remove('scanner-active');
+    if (!querySnapshot.empty) {
+      // If a product with the same barcode is found, populate the input fields
+      
+      const productData:any = querySnapshot.docs[0].data();
+      this.product = productData.name;
+      this.description = productData.description;
+   
+      // You can similarly populate other input fields here
+    } else {
+      this.showToast('Product not found' + 'warning');
+    }// log the raw scanned content
+      window.document.querySelector('ion-app')?.classList.remove('cameraView');
+    }
+  }
+
+
   
 
   

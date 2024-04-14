@@ -1,0 +1,137 @@
+.form {
+  top: 10%;
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  gap: 100px;
+  
+}
+
+.inner {
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 10px;
+  background-color: aquamarine;
+  border-radius: 10px; /* Adjust the border-radius as needed */
+  padding: 20px; /* Add padding for spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+.wrap{
+  width: 500px;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  left:35%;
+  top: 20%;
+  flex-direction: row;
+}
+
+.icon{
+  width: 40px;
+  height: 40px;
+}
+
+.input {
+   --input-focus: #2d8cf0;
+   --font-color: #323232;
+   --font-color-sub: #666;
+   --bg-color: #fff;
+   --main-color: #323232;
+   width: 400px;
+   border-radius: 5px;
+   border: 2px solid var(--main-color);
+   background-color: var(--bg-color);
+   box-shadow: 4px 4px var(--main-color);
+   font-size: 15px;
+   font-weight: 600;
+   color: var(--font-color);
+   padding: 5px 10px;
+   outline: none;
+ }
+ 
+ .input::placeholder {
+   color: var(--font-color-sub);
+   opacity: 0.8;
+ }
+ 
+ .input:focus {
+   border: 2px solid var(--input-focus);
+ }
+
+ .flip-card__btn {
+   --input-focus: #2d8cf0;
+   --font-color: #323232;
+   --font-color-sub: #666;
+   --bg-color: #fff;
+   --main-color: #323232;
+   margin: 20px 0 20px 0;
+   width: 100%;
+   height: 40px;
+   border-radius: 5px;
+   border: 2px solid var(--main-color);
+   background-color:rgb(124, 246, 250);
+   box-shadow: 4px 4px var(--main-color);
+   font-size: 17px;
+   font-weight: 600;
+   color: var(--font-color);
+   cursor: pointer;
+ } 
+
+ .flip-card__btn1 {
+  --input-focus: #2d8cf0;
+  --font-color: #323232;
+  --font-color-sub: #666;
+  --bg-color: #fff;
+  --main-color: #323232;
+  margin: 20px 0 20px 0;
+  width: 90%;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color:rgb(124, 246, 250);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  left: 5%;
+  z-index: 9999; /* Ensure it's above other content */
+} 
+
+ @media (max-width: 768px) {
+  .form {
+     width: 100%;
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+     top: 10%;
+  }
+
+  .wrap{
+    width: 100%;
+  }
+
+  .flex {
+     display: flex;
+     width: 100%;
+     flex-direction: row;
+     gap: 6px;
+   }
+   
+  
+  .input {
+     width: 100%;
+   }
+
+   .wrap{
+    left: 0%;
+   }
+
+}

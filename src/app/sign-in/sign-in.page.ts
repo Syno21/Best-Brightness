@@ -21,42 +21,69 @@ export class SignInPage implements OnInit {
     private db: AngularFirestore,
     private auth: AngularFireAuth,
     private Nav: NavController,
+    private Toast: ToastController
   ) { }
 
   ngOnInit() {
   }
 
+  async showToast(message: string) {
+    const toast = await this.Toast.create({
+      message: message,
+      duration: 2000,
+      position: 'top',
+    });
+    toast.present();
+  }
+
   onSubmit() {
-    if (this.password !== this.confirmpassword) {
-      console.error('Passwords do not match');
+    // Validate text fields for empty values
+    if (!this.firstname || !this.lastname || !this.email || !this.password || !this.confirmpassword) {
+      this.showToast('Please fill in all fields');
       return;
     }
-
+  
+    // Validate password for strong criteria
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!strongPasswordRegex.test(this.password)) {
+      this.showToast('Password must be at least 8 characters long and contain one uppercase letter, one number, and one symbol.');
+      return;
+    }
+  
+    // Check if password and confirm password match
+    if (this.password !== this.confirmpassword) {
+      this.showToast('Passwords do not match');
+      return;
+    }
+  
+    // Proceed with user creation and data addition
     const userData = {
       firstname: this.firstname,
       lastname: this.lastname,
       email: this.email,
       password: this.password,
+      Status: 'Admin',
     };
-
+  
     this.auth.createUserWithEmailAndPassword(this.email, this.password)
       .then((userCredential) => {
         if (userCredential.user) {
           this.db.collection('Users').add(userData)
             .then(() => {
-              console.log('User data added successfully');
+              this.showToast('Successfully Registered');
             })
             .catch((error) => {
-              console.error('Error adding user data:', error);
+              this.showToast('An Error occurred!! Please try again');
             });
         } else {
-          console.error('User credential is missing');
+          this.showToast('User credential is missing');
         }
       })
       .catch((error) => {
-        console.error('Error creating user:', error);
+        this.showToast('Error Signing up');
       });
   }
+  
 
 
   Login() {
@@ -75,21 +102,20 @@ export class SignInPage implements OnInit {
                   console.log(id);
                   const userData = doc.data();
                 });
-                console.log("logger!!");
                 this.Nav.navigateForward("/home");
               })
               .catch((error: any) => {
-                console.error('Error fetching user data:', error);
+                this.showToast('Error fetching user data:');
               });
           } else {
-            console.error('User email not found in userCredential');
+            this.showToast('User email not found in userCredential');
           }
         } else {
-          console.error('User credential is missing');
+          this.showToast('User credential is missing');
         }
       })
       .catch((error: any) => {
-        console.error('Error signing in:', error);
+        this.showToast('Error signing in');
       });
   }
   

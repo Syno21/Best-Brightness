@@ -1,3 +1,11 @@
+.content{
+  width: 100%;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 40%;
+}
+
 .wrapper {
     --input-focus: #2d8cf0;
     --font-color: #323232;
@@ -5,21 +13,21 @@
     --bg-color: #fff;
     --bg-color-alt: #666;
     --main-color: #323232;
-       display: flex; 
-       flex-direction: column; 
-       align-items: center;
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      justify-content: center;
+        align-items: center;
   }
   /* switch card */
   .switch {
     transform: translateY(-200px);
-    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     bottom: 0;
-    top: 300px;
-    left: 175px;
+    left: 2%;
     gap: 30px;
     width: 50px;
     height: 20px;
@@ -136,7 +144,7 @@
     justify-content: center;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    background: lightgrey;
+    background: aquamarine;
     gap: 20px;
     border-radius: 5px;
     border: 2px solid var(--main-color);
@@ -211,7 +219,7 @@
     height: 40px;
     border-radius: 5px;
     border: 2px solid var(--main-color);
-    background-color: var(--bg-color);
+    background-color:rgb(124, 246, 250);
     box-shadow: 4px 4px var(--main-color);
     font-size: 17px;
     font-weight: 600;

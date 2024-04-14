@@ -1,0 +1,35 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Stock Exchange</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="wrap">
+    <div class="form">
+      <div class="inner">
+        <label>Product: </label>
+      <select class="input" [(ngModel)]="product" [(ngModel)]="selectedProduct" (change)="updateQuantity()">
+        <option *ngFor="let table of tables$">{{ table.product }}</option>
+      </select>
+      <label>Quantity: </label>
+      <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
+      <div class="flex">
+        <button class="flip-card__btn" (click)="submit()">Add to Inventory!</button>
+      </div>
+      </div>
+      <div class="inner">
+        <label>Product: </label>
+      <select class="input" [(ngModel)]="product" [(ngModel)]="selectedProduct" (change)="updateQuantity()">
+        <option *ngFor="let table of tables$">{{ table.product }}</option>
+      </select>
+      <label>Quantity: </label>
+      <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
+      <div class="flex">
+        <button class="flip-card__btn" (click)="move()">Pick UP/Move to Store!</button>
+      </div>
+      </div>
+    </div>
+    <button class="flip-card__btn1" (click)="goToAddNewStock()">New Product</button>
+  </div>  
+</ion-content>

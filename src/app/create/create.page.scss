@@ -1,0 +1,102 @@
+.wrap{
+   width: 450px;
+   position: absolute;
+   justify-content: center;
+   align-items: center;
+}
+
+.flex {
+   display: flex;
+   width: 120%;
+   gap: 6px;
+ }
+
+ .form {
+   top: 40%;
+   position: absolute;
+   justify-content: center;
+   align-items: center;
+   display: flex;
+   width: 100%;
+   flex-direction: column;
+   gap: 10px;
+}
+
+.sort{
+   display: flex;
+   flex-direction: row;
+   gap: 10px;
+}
+
+
+.input {
+   --input-focus: #2d8cf0;
+   --font-color: #323232;
+   --font-color-sub: #666;
+   --bg-color: #fff;
+   --main-color: #323232;
+   width: 100%;
+   border-radius: 5px;
+   border: 2px solid var(--main-color);
+   background-color: var(--bg-color);
+   box-shadow: 4px 4px var(--main-color);
+   font-size: 15px;
+   font-weight: 600;
+   color: var(--font-color);
+   padding: 5px 10px;
+   outline: none;
+ }
+ 
+ .input::placeholder {
+   color: var(--font-color-sub);
+   opacity: 0.8;
+ }
+ 
+ .input:focus {
+   border: 2px solid var(--input-focus);
+ }
+
+ .flip-card__btn {
+   --input-focus: #2d8cf0;
+   --font-color: #323232;
+   --font-color-sub: #666;
+   --bg-color: #fff;
+   --main-color: #323232;
+   margin: 20px 0 20px 0;
+   width: 100%;
+   height: 40px;
+   border-radius: 5px;
+   border: 2px solid var(--main-color);
+   background-color:rgb(124, 246, 250);
+   box-shadow: 4px 4px var(--main-color);
+   font-size: 17px;
+   font-weight: 600;
+   color: var(--font-color);
+   cursor: pointer;
+ } 
+
+ @media (max-width: 768px) {
+   .form {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+   }
+
+   .flex {
+      display: flex;
+      width: 100%;
+      flex-direction: row;
+      gap: 6px;
+    }
+    
+   
+   .input {
+      width: 100%;
+    }
+
+    .wrap{
+      width: 350px;
+    }
+
+ }

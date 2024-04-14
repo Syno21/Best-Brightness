@@ -1,12 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>add</ion-title>
+    <ion-icon (click)="closeScanner()" class="cam" slot="end" name="camera-outline"></ion-icon>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <div class="form">
+  <div class="form" id="container">
     <label>Product Name: </label>
     <input type="text" [(ngModel)]="product" placeholder="Product" name="text" class="input">
     <label>Product Description: </label>
@@ -14,6 +15,11 @@
     <label>Quantity: </label>
     <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
     <label>Image: </label>
+    <button class="flip-card__btn1" (click)="scanBarcode()" >Scan Barcode
+      <ion-icon class="cam" slot="end" name="camera-outline"></ion-icon>
+    </button>
+    <label>Barcode: </label>
+    <input type="text" [(ngModel)]="barcode" placeholder="barcode" name="text" class="input">
       <div class="sort">
         <input type="file" width="150px" name="text" class="input">
         <ion-icon class="icon" slot="end" name="camera-outline" (click)="takePhoto()"></ion-icon>
@@ -25,5 +31,6 @@
 
       <button class="flip-card__btn" (click)="submit()" >Submit!</button>
   </div>
+  
 
 </ion-content>

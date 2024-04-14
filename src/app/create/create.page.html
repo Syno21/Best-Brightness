@@ -1,0 +1,28 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>create</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="form">
+    <div class="wrap">
+      <div class="flex">
+        <label>
+            <input class="input" [(ngModel)]="firstname" [ngModelOptions]="{ standalone: true }"  type="text" placeholder="First Name" required="">
+        </label>
+        <label>
+            <input class="input" [(ngModel)]="lastname" [ngModelOptions]="{ standalone: true }"  type="text" placeholder="Last Name" required="">
+        </label>
+      </div>
+      <label>Username: </label>
+      <input type="text" [(ngModel)]="username" placeholder="username" name="text" class="input">
+      <label>Password: </label>
+      <input type="text" [(ngModel)]="password" placeholder="password" type="password" name="text" class="input">
+      <label>Confirm Password: </label>
+      <input type="text" [(ngModel)]="confirm_password" placeholder="confirm_password"  type="password" name="text" class="input">
+  
+        <button class="flip-card__btn" (click)="submit()" >Submit!</button>
+    </div>
+  </div>
+</ion-content>
