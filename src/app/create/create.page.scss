@@ -1,8 +1,15 @@
 .wrap{
-   width: 450px;
-   position: absolute;
-   justify-content: center;
-   align-items: center;
+  width: 500px;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  left:30%;
+  top: 20%;
+  flex-direction: row;
+  background-color: aquamarine;
+  border-radius: 10px; /* Adjust the border-radius as needed */
+  padding: 20px; /* Add padding for spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .flex {
@@ -12,15 +19,29 @@
  }
 
  .form {
-   top: 40%;
-   position: absolute;
-   justify-content: center;
-   align-items: center;
-   display: flex;
-   width: 100%;
-   flex-direction: column;
-   gap: 10px;
+  top: 10%;
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  gap: 100px;
+  
 }
+
+.inner {
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 10px;
+  background-color: aquamarine;
+  border-radius: 10px; /* Adjust the border-radius as needed */
+  padding: 20px; /* Add padding for spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+
 
 .sort{
    display: flex;
@@ -81,6 +102,8 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      left: 0%;
+      top: 20%;
    }
 
    .flex {
@@ -96,7 +119,10 @@
     }
 
     .wrap{
-      width: 350px;
+      width: 100%;
+      left: 0%;
+      padding: 2%;
+      top: 20%;
     }
 
  }

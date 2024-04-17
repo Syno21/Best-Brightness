@@ -6,10 +6,13 @@ import {
   CameraSource,
   Photo,
 } from '@capacitor/camera';
+import { ViewproductsPage } from '../viewproducts/viewproducts.page';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import {  LoadingController,NavController, ToastController , AlertController} from '@ionic/angular';
+import {  LoadingController,NavController, ToastController , AlertController, ModalController} from '@ionic/angular';
+import * as pdfFonts from 'pdfmake/build/vfs_fonts';
+const pdfMake = require('pdfmake/build/pdfmake.js');
 
 
 @Component({
@@ -23,13 +26,15 @@ export class AddPage implements OnInit {
   capturedPhotos: any[] = [];
   imageUrls: any = [];
   url: any;
-
+  cart:any[]=[];
   //Firebase Data
 
   product: any;
   description: any;
   quantity: any;
   barcode: any;
+  currentDate: any;
+  currentTime: any;
 
 
   constructor(
@@ -38,7 +43,10 @@ export class AddPage implements OnInit {
     private loader: LoadingController,
     private Toast: ToastController,
     private renderer: Renderer2,
-  ) { }
+    private Modal: ModalController
+  ) { 
+    
+  }
 
   ngOnInit() {
   }
@@ -75,31 +83,14 @@ export class AddPage implements OnInit {
     return snapshot.ref.getDownloadURL();
   }
 
-  async submit() {
-    const loader = await this.loader.create({
-      message: 'Submitting...',
-      cssClass: 'custom-loader-class'
+  async viewImage() {
+    const modal = await this.Modal.create({
+      component: ViewproductsPage,
+      componentProps: {
+
+      },
     });
-    await loader.present();
-  
-    try {
-      const imageUrl = await this.uploadImage(this.previewImage);
-  
-      const newNoteRef = this.db.collection('Notes').doc();
-      await newNoteRef.set({
-        product: this.product,
-        description: this.description,
-        quantity: this.quantity,
-        capturedPhotosUrl: imageUrl, // Use imageUrl instead of this.previewImage
-        barcode: this.barcode
-      });
-  
-      loader.dismiss();
-      this.showToast('Uploaded successfully!');
-    } catch (error) {
-      console.error("error: " + error);
-      loader.dismiss();
-    }
+    return await modal.present();
   }
 
   async closeScanner(){
@@ -163,7 +154,155 @@ showCard() {
     }
   }
 
+  async submit() {
+    const loader = await this.loader.create({
+      message: 'Submitting...',
+      cssClass: 'custom-loader-class'
+    });
+    await loader.present();
+  
+    try {
+      const imageUrl = await this.uploadImage(this.previewImage);
 
+      const newItem = {
+        product: this.product,
+        description: this.description,
+        quantity: this.quantity,
+        capturedPhotosUrl: imageUrl, // Use imageUrl instead of this.previewImage
+        barcode: this.barcode
+      }
+      this.cart.push(newItem);
+  
+      const newNoteRef = this.db.collection('Notes').doc();
+      await newNoteRef.set({newItem});
+  
+      this.generateSlip()
+      loader.dismiss();
+      this.showToast('Uploaded successfully!');
+      this.viewImage()
+    } catch (error) {
+      console.error("error: " + error);
+      loader.dismiss();
+    }
+  }
+
+  async generateSlip() {
+    const loader = await this.loader.create({
+      message: 'Generating Slip...',
+    });
+    await loader.present();
+  console.log("data",this.cart)
+    try {
+      // Create a slip document in Firestore
+      const slipData = {
+        date: new Date(),
+        items: this.cart.map(item => ({
+          name: item.product,
+          quantity: item.quantity,
+          description: item.description,
+          imageUrl: item.imageUrl,
+          // pickersDetails: item.pickersDetails,
+          // dateOfPickup: item.dateOfPickup,
+          // timeOfPickup: item.timeOfPickup,
+          barcode: item.barcode,
+          // pickersDetailsEmail:this.pickersDetailsEmail,
+          // phone :this.phone,
+          // Cumpany:this.Cumpany
+        })),
+      };
+      await this.db.collection('invoice').add(slipData);
+      pdfMake.vfs = pdfFonts.pdfMake.vfs;
+     // Calculate column widths based on content length
+
+
+// Define PDF content
+// Define PDF content
+// Define PDF content
+const docDefinition = {
+  content: [
+    {
+      text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
+      style: 'companyName'
+    },
+    {
+      text: 'Invoice',
+      style: 'header'
+    },
+    {
+      text: `Date: ${new Date().toLocaleDateString()}`,
+      style: 'subheader'
+    },
+    {
+      table: {
+        headerRows: 1,
+        widths: [ '', '', '', '', '', '' ],
+        body: [
+          [
+            { text: 'Name', style: 'tableHeader' },
+            { text: 'Category', style: 'tableHeader' },
+            { text: 'Description', style: 'tableHeader' },
+            { text: 'Quantity', style: 'tableHeader' },
+            { text: 'Picker\'s Details', style: 'tableHeader' },
+            { text: 'Barcode', style: 'tableHeader' }
+          ],
+          ...this.cart.map(item => [
+            { text: item.name, alignment: 'left' }, // Align left
+          //  { text: item.category, alignment: 'center' }, // Align center
+            { text: item.description, alignment: 'left' }, // Align left
+            { text: item.quantity.toString(), alignment: 'center' }, // Align center
+           // { text: item.pickersDetails, alignment: 'left' }, // Align left
+            { text: item.barcode, alignment: 'center' } // Align center
+          ])
+        ]
+      }
+    }
+  ],
+  styles: {
+    header: {
+      fontSize: 24,
+      bold: true,
+      margin: [0, 0, 0, 10],
+      alignment: 'center',
+      color: '#4caf50' // Green color for the header
+    },
+    subheader: {
+      fontSize: 14,
+      bold: true,
+      margin: [0, 10, 0, 10],
+      alignment: 'center'
+    },
+    tableHeader: {
+      bold: true,
+      fontSize: 12,
+      color: '#37474f', // Dark grey color for the table headers
+      alignment: 'center'
+    },
+    companyName: { // Style for the company name
+      fontSize: 28,
+      bold: true,
+      margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
+      alignment: 'center',
+      color: '#ff5722' // Deep orange color for the company name
+    }
+  }
+};
+
+    // Generate PDF
+    //pdfMake.createPdf(docDefinition).open();
+    const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
+      // Clear the cart after generating the slip
+      pdfDocGenerator.open();
+      this.cart = [];
+  
+      // Show success toast notification
+      this.showToast('Slip generated successfully'+ "success");
+    } catch (error) {
+      console.error('Error generating slip:', error);
+      // Handle error
+    } finally {
+      loader.dismiss();
+    }
+}
   
 
   

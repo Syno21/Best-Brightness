@@ -1,5 +1,8 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button ></ion-back-button>
+    </ion-buttons>
     <ion-title>add</ion-title>
     <ion-icon (click)="closeScanner()" class="cam" slot="end" name="camera-outline"></ion-icon>
   </ion-toolbar>
@@ -15,7 +18,7 @@
     <label>Quantity: </label>
     <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
     <label>Image: </label>
-    <button class="flip-card__btn1" (click)="scanBarcode()" >Scan Barcode
+    <button class="flip-card__btn1" (click)="generateSlip()" >Scan Barcode
       <ion-icon class="cam" slot="end" name="camera-outline"></ion-icon>
     </button>
     <label>Barcode: </label>

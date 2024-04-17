@@ -1,0 +1,5 @@
+1. npm install @ionic/pwa-elements
+2. npm i @capacitor-community/barcode-scanner
+3. npm install @capacitor/camera
+4. npm install emailjs-com
+5. npm install pdfmake

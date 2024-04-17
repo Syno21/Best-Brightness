@@ -88,35 +88,41 @@ export class SignInPage implements OnInit {
 
   Login() {
     this.auth.signInWithEmailAndPassword(this.email, this.password)
-      .then((userCredential) => {
-        if (userCredential) {
-          const email = userCredential.user?.email; // Extract email from userCredential
-  
-          if (email) {
-            this.db.collection('Users', ref => ref.where('email', '==', email))
-              .get()
-              .toPromise()
-              .then((querySnapshot: any) => {
-                querySnapshot.forEach((doc: any) => {
-                  const id = doc.id;
-                  console.log(id);
-                  const userData = doc.data();
-                });
+  .then((userCredential) => {
+    if (userCredential) {
+      const email = userCredential.user?.email; // Extract email from userCredential
+
+      if (email) {
+        this.db.collection('Users', ref => ref.where('email', '==', email))
+          .get()
+          .toPromise()
+          .then((querySnapshot: any) => {
+            querySnapshot.forEach((doc: any) => {
+              const userData = doc.data();
+              const status = userData.status; // Get the status field from userData
+              console.log(status);
+
+              if (status === 'driver') {
                 this.Nav.navigateForward("/home");
-              })
-              .catch((error: any) => {
-                this.showToast('Error fetching user data:');
-              });
-          } else {
-            this.showToast('User email not found in userCredential');
-          }
-        } else {
-          this.showToast('User credential is missing');
-        }
-      })
-      .catch((error: any) => {
-        this.showToast('Error signing in');
-      });
+              } else {
+                this.Nav.navigateForward("/analytics");
+              }
+            });
+          })
+          .catch((error: any) => {
+            this.showToast('Error fetching user data: ' + error);
+          });
+      } else {
+        this.showToast('User email not found in userCredential');
+      }
+    } else {
+      this.showToast('User credential is missing');
+    }
+  })
+  .catch((error: any) => {
+    this.showToast('Error signing in: ' + error);
+  });
+
   }
   
 

@@ -3,17 +3,21 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    path: 'sign-in',
+    loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule)
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'sign-in',
     pathMatch: 'full'
   },
   {
     path: 'sign-in',
     loadChildren: () => import('./sign-in/sign-in.module').then( m => m.SignInPageModule)
+  },
+  {
+    path: 'home',
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
   },
   {
     path: 'add',
@@ -38,6 +42,14 @@ const routes: Routes = [
   {
     path: 'analytics',
     loadChildren: () => import('./analytics/analytics.module').then( m => m.AnalyticsPageModule)
+  },
+  {
+    path: 'viewproducts',
+    loadChildren: () => import('./viewproducts/viewproducts.module').then( m => m.ViewproductsPageModule)
+  },
+  {
+    path: 'home-drive',
+    loadChildren: () => import('./home-drive/home-drive.module').then( m => m.HomeDrivePageModule)
   },
 ];
 

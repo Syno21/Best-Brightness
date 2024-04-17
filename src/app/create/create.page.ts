@@ -3,6 +3,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {  LoadingController,NavController, ToastController , AlertController} from '@ionic/angular';
+import emailjs from 'emailjs-com';
 
 @Component({
   selector: 'app-create',
@@ -28,6 +29,7 @@ export class CreatePage implements OnInit {
     private storage: AngularFireStorage,
     private loader: LoadingController,
     private Toast: ToastController,
+    private auth: AngularFireAuth
   ) { }
 
   ngOnInit() {
@@ -50,15 +52,44 @@ export class CreatePage implements OnInit {
     await loader.present();
   
     try {
-      const newNoteRef = this.db.collection('Users').doc();
-      await newNoteRef.set({
+      const userData = {
         firstname: this.firstname,
         lastname: this.lastname,
-        username: this.username,
+        email: this.username,
         password: this.password,
-        confirm_password: this.confirm_password, // Use imageUrl instead of this.previewImage
-        Status: 'Driver'
-      });
+        Status: 'driver',
+      };
+    
+      this.auth.createUserWithEmailAndPassword(this.username, this.password)
+        .then((userCredential) => {
+          if (userCredential.user) {
+            this.db.collection('Users').add(userData)
+              .then(() => {
+                this.showToast('Successfully Registered');
+              })
+              .catch((error) => {
+                this.showToast('An Error occurred!! Please try again');
+              });
+          } else {
+            this.showToast('User credential is missing');
+          }
+        })
+        .catch((error) => {
+          this.showToast('Error Signing up');
+        });
+
+      const emailParams = {
+        name: this.firstname,
+        surname: this.lastname,
+        email_to: this.username,
+        from_email: 'thandekan736@gmail.com',
+        subject: 'Interview Invitation from MUTInnovation Lab',
+        message: 'You are invited for an interview on ' 
+      };
+  
+      await emailjs.send('interviewEmailsAD', 'template_7x4kjte', emailParams, 'TrFF8ofl4gbJlOhzB');
+
+      console.log('Email successfully sent');
   
       loader.dismiss();
       this.showToast('Uploaded successfully!');

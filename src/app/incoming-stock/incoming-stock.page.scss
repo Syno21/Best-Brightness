@@ -3,11 +3,39 @@
   position: absolute;
   justify-content: center;
   display: flex;
-  width: 350px;
-  flex-direction: column;
-  gap: 10px;
-  left: 35%;
-  padding: 2%;
+  width: 100%;
+  flex-direction: row;
+  gap: 100px;
+  
+}
+.wrap{
+  width: 500px;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  left:30%;
+  top: 20%;
+  flex-direction: row;
+  background-color: aquamarine;
+  border-radius: 10px; /* Adjust the border-radius as needed */
+  padding: 20px; /* Add padding for spacing */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.flex {
+   display: flex;
+   width: 120%;
+   gap: 6px;
+ }
+
+ .form {
+  top: 10%;
+  position: absolute;
+  justify-content: center;
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  gap: 100px;
   
 }
 
@@ -71,10 +99,6 @@
        align-items: center;
     }
   
-    .wrap{
-      width: 100%;
-    }
-  
     .flex {
        display: flex;
        width: 100%;
@@ -88,6 +112,7 @@
      }
   
      .wrap{
+      width: 100%;
       left: 0%;
      }
   

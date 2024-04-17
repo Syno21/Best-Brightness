@@ -1,22 +1,27 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button ></ion-back-button>
+    </ion-buttons>
     <ion-title>incoming-stock</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="form" >
-    <div class="cover" *ngIf="dbPhotos.length > 0">
-      <ion-item class="preview" *ngFor="let photo of dbPhotos; let i = index" >
-        <ion-img [src]="photo" alt="image"></ion-img>
-      </ion-item>
+  <div class="form">
+    <div class="wrap" >
+      <div class="cover" *ngIf="dbPhotos.length > 0">
+        <ion-item class="preview" *ngFor="let photo of dbPhotos; let i = index" >
+          <ion-img [src]="photo" alt="image"></ion-img>
+        </ion-item>
+      </div>
+      <label>Product Name: </label>
+      <input type="text" [(ngModel)]="product"  placeholder="Product" name="text" class="input">
+      <label>Quantity: </label>
+      <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
+  
+      <button class="flip-card__btn" (click)="Update()" >Update</button>
+  
     </div>
-    <label>Product Name: </label>
-    <input type="text" [(ngModel)]="product"  placeholder="Product" name="text" class="input">
-    <label>Quantity: </label>
-    <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
-
-    <button class="flip-card__btn" (click)="Update()" >Update</button>
-
   </div>
 </ion-content>
