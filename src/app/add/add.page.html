@@ -13,10 +13,18 @@
   <div class="form" id="container">
     <label>Product Name: </label>
     <input type="text" [(ngModel)]="product" placeholder="Product" name="text" class="input">
+    <label>Category: </label>
+    <select class="input" placeholder="Category" [(ngModel)]="category"  [ngModelOptions]="{ standalone: true }" type="select" required="">
+      <option *ngFor="let option of departmentOptions" [value]="option.value">{{ option.text }}</option>
+    </select>
     <label>Product Description: </label>
     <textarea placeholder="Description" [(ngModel)]="description" id="comment" name="comment" rows="5" required="" class="input"></textarea>
     <label>Quantity: </label>
     <input type="number" placeholder="Quantity" [(ngModel)]="quantity" name="text" class="input">
+    <label>Driver: </label>
+    <select class="input" [(ngModel)]="driver"  >
+      <option *ngFor="let table of tables$">{{ table.firstname }}</option>
+    </select>
     <label>Image: </label>
     <button class="flip-card__btn1" (click)="generateSlip()" >Scan Barcode
       <ion-icon class="cam" slot="end" name="camera-outline"></ion-icon>
@@ -32,7 +40,11 @@
         <ion-img [src]="previewImage" alt="Preview Image"></ion-img>
       </div>
 
-      <button class="flip-card__btn" (click)="submit()" >Submit!</button>
+      <button class="flip-card__btn1" (click)="addItem()" >Add Item!</button>
+      <button class="flip-card__btn1" (click)="submit()" >Submit!</button>
+      <br>
+      <br>
+      <button class="flip-card__btn" (click)="generateSlip()" >Get Slip!</button>
   </div>
   
 

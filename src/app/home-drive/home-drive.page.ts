@@ -22,15 +22,11 @@ export class HomeDrivePage implements OnInit {
   }
 
   goToAnalytics(){
-    this.Nav.navigateForward("/analytics");
+    this.Nav.navigateForward("/viewproducts");
   }
 
-  goToStockExchange(){
-    this.Nav.navigateForward("/deliveries");
-  }
-
-  goToAddNewStock(){
-    this.Nav.navigateForward("/add");
+  Exit(){
+    this.Nav.navigateForward("/sign-in");
   }
 
 }

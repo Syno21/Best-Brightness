@@ -21,7 +21,7 @@ export class HomePage {
   }
 
   goToAnalytics(){
-    this.Nav.navigateForward("/analytics");
+    this.Nav.navigateForward("/viewproducts");
   }
 
   goToStockExchange(){
@@ -30,5 +30,9 @@ export class HomePage {
 
   goToAddNewStock(){
     this.Nav.navigateForward("/add");
+  }
+
+  Exit(){
+    this.Nav.navigateForward("/sign-in");
   }
 }

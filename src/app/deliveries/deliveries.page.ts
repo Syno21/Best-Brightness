@@ -64,6 +64,12 @@ export class DeliveriesPage implements OnInit {
       cssClass: 'custom-loader-class'
     });
     await loader.present();
+
+    if (!this.quantity ) {
+      this.showToast('insert values');
+      loader.dismiss();
+      return;
+    }
   
     try {
       // Fetch the current quantity for the selected product from Firebase
@@ -81,14 +87,11 @@ export class DeliveriesPage implements OnInit {
         });
       } else {
         // Create a new note if it doesn't exist
-        await this.db.collection('Notes').add({
-          product: this.product,
-          quantity: newTotalQuantity,
-        });
+        this.showToast("item does not exist");
       }
   
       loader.dismiss();
-      this.showToast('Added successfully!');
+      this.showToast('Updated successfully!');
     } catch (error) {
       console.error("Error: " + error);
       loader.dismiss();

@@ -25,6 +25,7 @@
 				<div class="table-data">
 					<div>Product Name: {{ table.product }}</div>
         			<div>Description: {{ table.description }}</div>
+					  <div>Category: {{ table.category }}</div>
 				</div>
 				<div class="table-data">{{ table.quantity }}</div>
 				<div class="table-data">
@@ -46,6 +47,7 @@
 		<div class="table-data">
 			<div>Product Name: {{ table.product }}</div>
 			  <div>Description: {{ table.description }}</div>
+			  <div>Category: {{ table.category }}</div>
 		</div>
 		<div class="table-data">Quantity: {{ table.quantity }}</div>
 		<button (click)="navigateToNewPage(table.product)">

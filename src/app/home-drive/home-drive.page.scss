@@ -53,6 +53,29 @@
    width: 30px;
    height: 30px;
  }
+
+ .flip-card__btn {
+  --input-focus: #2d8cf0;
+  --font-color: #323232;
+  --font-color-sub: #666;
+  --bg-color: #fff;
+  --main-color: #323232;
+  margin: 20px 0 20px 0;
+  width: 90%;
+  height: 40px;
+  border-radius: 5px;
+  border: 2px solid var(--main-color);
+  background-color:rgb(124, 246, 250);
+  box-shadow: 4px 4px var(--main-color);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--font-color);
+  cursor: pointer;
+  position: fixed;
+  bottom: 0;
+  left: 5%;
+  z-index: 9999; /* Ensure it's above other content */
+}
  
  @media (max-width: 768px) {
    .cards{

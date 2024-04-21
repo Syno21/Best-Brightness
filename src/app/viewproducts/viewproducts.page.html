@@ -3,24 +3,34 @@
     <ion-buttons slot="start">
       <ion-back-button ></ion-back-button>
     </ion-buttons>
-    <ion-title>viewproducts</ion-title>
+    <ion-title>Analytics</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-list class="list">
-    <ion-card class="card1">
-      <ion-img  alt="Preview Image" class="table-image"></ion-img>
-      <div class="table-data">
-        <div>Product Name: </div>
-          <div>Description: </div>
-      </div>
-      <div class="table-data">Quantity: </div>
-      <button >
-        <span>
-           Print Slip
-        </span>
-       </button>
-    </ion-card>
-  </ion-list>
+<ion-content [fullscreen]="true"> 
+  <div class="dashboard">
+    <div *ngFor="let table of tables$" class="circle-container">
+      <h3>{{ table.product }}</h3>
+      <svg>
+        <circle class="bg" cx="57" cy="57" r="52" />
+        <circle
+          class="meter-1"
+          cx="57"
+          cy="57"
+          r="52"
+          [style.--value]="calculateProgressPercentage(table.quantity)"
+          [style.stroke]="table.quantity < 50 ? 'red' : 'aqua'"
+        />
+        <text
+          x="50%"
+          y="50%"
+          text-anchor="middle"
+          dy=".3em"
+          [style.fill]="table.quantity < 50 ? 'red' : 'black'"
+        >
+          {{ table.quantity < 50 ? 'Running Low' : table.quantity }}
+        </text>
+      </svg>
+    </div>
+  </div>
 </ion-content>

@@ -21,6 +21,7 @@ export class SignInPage implements OnInit {
     private db: AngularFirestore,
     private auth: AngularFireAuth,
     private Nav: NavController,
+    private loader: LoadingController,
     private Toast: ToastController
   ) { }
 
@@ -36,10 +37,16 @@ export class SignInPage implements OnInit {
     toast.present();
   }
 
-  onSubmit() {
+  async onSubmit() {
+    const loader = await this.loader.create({
+      message: 'Submitting...',
+      cssClass: 'custom-loader-class'
+    });
+    await loader.present();
     // Validate text fields for empty values
     if (!this.firstname || !this.lastname || !this.email || !this.password || !this.confirmpassword) {
       this.showToast('Please fill in all fields');
+      loader.dismiss();
       return;
     }
   
@@ -47,12 +54,14 @@ export class SignInPage implements OnInit {
     const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
     if (!strongPasswordRegex.test(this.password)) {
       this.showToast('Password must be at least 8 characters long and contain one uppercase letter, one number, and one symbol.');
+      loader.dismiss();
       return;
     }
   
     // Check if password and confirm password match
     if (this.password !== this.confirmpassword) {
       this.showToast('Passwords do not match');
+      loader.dismiss();
       return;
     }
   
@@ -71,22 +80,33 @@ export class SignInPage implements OnInit {
           this.db.collection('Users').add(userData)
             .then(() => {
               this.showToast('Successfully Registered');
+              loader.dismiss();
             })
             .catch((error) => {
               this.showToast('An Error occurred!! Please try again');
+              loader.dismiss();
             });
         } else {
           this.showToast('User credential is missing');
+          loader.dismiss();
         }
+        loader.dismiss();
       })
       .catch((error) => {
         this.showToast('Error Signing up');
+        loader.dismiss();
       });
   }
   
 
 
-  Login() {
+  async Login() {
+    const loader = await this.loader.create({
+      message: 'Submitting...',
+      cssClass: 'custom-loader-class'
+    });
+    await loader.present();
+
     this.auth.signInWithEmailAndPassword(this.email, this.password)
   .then((userCredential) => {
     if (userCredential) {
@@ -111,16 +131,21 @@ export class SignInPage implements OnInit {
           })
           .catch((error: any) => {
             this.showToast('Error fetching user data: ' + error);
+            loader.dismiss();
           });
       } else {
         this.showToast('User email not found in userCredential');
+        loader.dismiss();
       }
     } else {
       this.showToast('User credential is missing');
+      loader.dismiss();
     }
+    loader.dismiss();
   })
   .catch((error: any) => {
-    this.showToast('Error signing in: ' + error);
+    this.showToast('Error signing in');
+    loader.dismiss();
   });
 
   }

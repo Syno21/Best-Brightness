@@ -13,6 +13,8 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import {  LoadingController,NavController, ToastController , AlertController, ModalController} from '@ionic/angular';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener';
 
 
 @Component({
@@ -35,6 +37,10 @@ export class AddPage implements OnInit {
   barcode: any;
   currentDate: any;
   currentTime: any;
+  driver: any;
+  category: any;
+
+  tables$: any;
 
 
   constructor(
@@ -45,10 +51,25 @@ export class AddPage implements OnInit {
     private renderer: Renderer2,
     private Modal: ModalController
   ) { 
-    
+    this.getAllDocuments();
   }
 
   ngOnInit() {
+  }
+
+  departmentOptions = [
+    { value: 'Cleaning detegents', text: 'Cleaning detegents' },
+    { value: 'Plastic', text: 'Plastic' },
+    { value: 'Cleaning equipments', text: 'Cleaning equipments' },
+
+  ];
+
+  getAllDocuments() {
+    this.db.collection('Users').valueChanges().subscribe((data: any[]) => {
+      this.tables$ = data;
+      this.tables$.forEach((table: { product: any; }) => {
+      });
+    });
   }
 
   async showToast(message: string) {
@@ -169,140 +190,182 @@ showCard() {
         description: this.description,
         quantity: this.quantity,
         capturedPhotosUrl: imageUrl, // Use imageUrl instead of this.previewImage
-        barcode: this.barcode
+        barcode: this.barcode,
+        driver: this.driver
       }
       this.cart.push(newItem);
   
       const newNoteRef = this.db.collection('Notes').doc();
-      await newNoteRef.set({newItem});
-  
-      this.generateSlip()
+      await newNoteRef.set({product: this.product,
+        description: this.description,
+        quantity: this.quantity,
+        capturedPhotosUrl: imageUrl, // Use imageUrl instead of this.previewImage
+        barcode: this.barcode,
+        driver: this.driver,
+        category: this.category});
+        
+        this.clear()
       loader.dismiss();
       this.showToast('Uploaded successfully!');
-      this.viewImage()
     } catch (error) {
       console.error("error: " + error);
       loader.dismiss();
     }
   }
 
+  clear(){
+    this.product = '',
+    this.description = '',
+    this.quantity = '',
+    this.capturedPhotos = [0]
+  }
+
+
+  addItem(){
+    const newItem = {
+      product: this.product,
+      description: this.description,
+      quantity: this.quantity,
+      barcode: this.barcode,
+      driver: this.driver,
+      category: this.category
+    }
+
+    this.cart.push(newItem);
+    console.log(this.cart)
+  }
+
+
+
   async generateSlip() {
+    if ( !this.cart.length) {
+    this.showToast("cart ampty" + "warning");
+      // If cart is null or empty, return or perform desired action
+      return;
+    }
+    // If cart is not empty, proceed with further actions
     const loader = await this.loader.create({
-      message: 'Generating Slip...',
+        message: 'Generating Slip...',
     });
     await loader.present();
-  console.log("data",this.cart)
+    console.log('data', this.cart);
     try {
-      // Create a slip document in Firestore
-      const slipData = {
-        date: new Date(),
-        items: this.cart.map(item => ({
-          name: item.product,
-          quantity: item.quantity,
-          description: item.description,
-          imageUrl: item.imageUrl,
-          // pickersDetails: item.pickersDetails,
-          // dateOfPickup: item.dateOfPickup,
-          // timeOfPickup: item.timeOfPickup,
-          barcode: item.barcode,
-          // pickersDetailsEmail:this.pickersDetailsEmail,
-          // phone :this.phone,
-          // Cumpany:this.Cumpany
-        })),
-      };
-      await this.db.collection('invoice').add(slipData);
-      pdfMake.vfs = pdfFonts.pdfMake.vfs;
-     // Calculate column widths based on content length
-
-
-// Define PDF content
-// Define PDF content
-// Define PDF content
-const docDefinition = {
-  content: [
-    {
-      text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
-      style: 'companyName'
-    },
-    {
-      text: 'Invoice',
-      style: 'header'
-    },
-    {
-      text: `Date: ${new Date().toLocaleDateString()}`,
-      style: 'subheader'
-    },
-    {
-      table: {
-        headerRows: 1,
-        widths: [ '', '', '', '', '', '' ],
-        body: [
-          [
-            { text: 'Name', style: 'tableHeader' },
-            { text: 'Category', style: 'tableHeader' },
-            { text: 'Description', style: 'tableHeader' },
-            { text: 'Quantity', style: 'tableHeader' },
-            { text: 'Picker\'s Details', style: 'tableHeader' },
-            { text: 'Barcode', style: 'tableHeader' }
+        // Create a slip document in Firestore
+        const slipData = {
+            date: new Date().toLocaleDateString(),
+            driver: this.cart[0].driver,
+                    items: this.cart.map(item => ({
+                      product: item.product,
+                      quantity: item.quantity,
+                      description: item.description,
+                      pickers_Name: item.driver,
+                      barcode: item.barcode,
+                      category: this.category
+            })),
+            
+        };
+        console.log('slipData:', slipData); // Log slipData to check its structure
+  
+  await this.db.collection('invoice').add(slipData);
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  
+        // Define PDF content
+        const docDefinition = {
+          content: [
+              {
+                  text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
+                  style: 'companyName',
+              },
+              {
+                  text: 'Invoice',
+                  style: 'header',
+              },
+              {
+                  text: `Date: ${new Date().toLocaleDateString()}`,
+                  style: 'subheader',
+              },
+              {
+                  text: ` ${slipData.driver}`,
+                  style: 'subheader',
+              },
+              // Use an unordered list for the items
+              {
+                  ul: slipData.items.map((item: any) => `${item.product} x ${item.quantity} - ${item.description} - ${item.category} - (${item.barcode})`),
+                  style: 'listItem',
+              },
           ],
-          ...this.cart.map(item => [
-            { text: item.name, alignment: 'left' }, // Align left
-          //  { text: item.category, alignment: 'center' }, // Align center
-            { text: item.description, alignment: 'left' }, // Align left
-            { text: item.quantity.toString(), alignment: 'center' }, // Align center
-           // { text: item.pickersDetails, alignment: 'left' }, // Align left
-            { text: item.barcode, alignment: 'center' } // Align center
-          ])
-        ]
-      }
-    }
-  ],
-  styles: {
-    header: {
-      fontSize: 24,
-      bold: true,
-      margin: [0, 0, 0, 10],
-      alignment: 'center',
-      color: '#4caf50' // Green color for the header
-    },
-    subheader: {
-      fontSize: 14,
-      bold: true,
-      margin: [0, 10, 0, 10],
-      alignment: 'center'
-    },
-    tableHeader: {
-      bold: true,
-      fontSize: 12,
-      color: '#37474f', // Dark grey color for the table headers
-      alignment: 'center'
-    },
-    companyName: { // Style for the company name
-      fontSize: 28,
-      bold: true,
-      margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
-      alignment: 'center',
-      color: '#ff5722' // Deep orange color for the company name
+          styles: {
+              header: {
+                  fontSize: 24,
+                  bold: true,
+                  margin: [0, 0, 0, 10],
+                  alignment: 'center',
+                  color: '#4caf50', // Green color for the header
+              },
+              subheader: {
+                  fontSize: 14,
+                  bold: true,
+                  margin: [0, 10, 0, 10],
+                  alignment: 'center',
+              },
+              listItem: {
+                  fontSize: 12,
+                  margin: [0, 5, 0, 5],
+              },
+              companyName: {
+                  // Style for the company name
+                  fontSize: 28,
+                  bold: true,
+                  margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
+                  alignment: 'center',
+                  color: '#ff5722', // Deep orange color for the company name
+              },
+          },
+      };
+  
+  
+        const pdfDoc = await pdfMake.createPdf(docDefinition);
+        // Generate the PDF as base64 data
+        pdfDoc.getBase64(async (data: any) => {
+            // Save the PDF file locally on the device
+            try {
+                // Generate a random file name for the PDF
+                const fileName =  `images/${Date.now()}_shop.pdf.pdf`;
+  
+                // Write the PDF data to the device's data directory
+                const result = await Filesystem.writeFile({
+                    path: fileName,
+                    data: data,
+                    directory: Directory.Documents,
+                    recursive: true
+                });
+  
+                console.log('PDF File created at: ', result.uri);
+  
+                // Define options for opening the PDF file
+                const options: FileOpenerOptions = {
+                    filePath: `${result.uri}`,
+                    contentType: 'application/pdf', // Mime type of the file
+                    openWithDefault: true, // Open with the default application
+                };
+                loader.dismiss();
+                // Use FileOpener to open the PDF file
+                await FileOpener.open(options);
+                this.cart=[];
+            } catch (error) {
+                loader.dismiss();
+                console.error('Error saving or opening PDF:', error);
+                // Handle error
+            }
+        });
+  
+        alert('done');
+    } catch (error) {
+        loader.dismiss();
+        console.error('Error generating slip:', error);
+        // Handle error
     }
   }
-};
-
-    // Generate PDF
-    //pdfMake.createPdf(docDefinition).open();
-    const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
-      // Clear the cart after generating the slip
-      pdfDocGenerator.open();
-      this.cart = [];
-  
-      // Show success toast notification
-      this.showToast('Slip generated successfully'+ "success");
-    } catch (error) {
-      console.error('Error generating slip:', error);
-      // Handle error
-    } finally {
-      loader.dismiss();
-    }
-}
   
 
   
